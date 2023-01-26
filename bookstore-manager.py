@@ -15,7 +15,7 @@ class Book():
     @property
     def id(self):
         """
-        Retern id
+        Return id
         """
         return self._id
     
@@ -52,6 +52,11 @@ CREATE TABLE IF NOT EXISTS books(id INTEGER PRIMARY KEY AUTOINCREMENT, Title TEX
     
     @property
     def header(self) -> List[str]:
+        """
+        Return the list of column names from table
+        Returns:
+            List[str]: column name list
+        """
         self._cursor.execute('PRAGMA table_info("books")')
         column_names = [i[1] for i in self._cursor.fetchall()]
         return column_names
@@ -60,7 +65,7 @@ CREATE TABLE IF NOT EXISTS books(id INTEGER PRIMARY KEY AUTOINCREMENT, Title TEX
         """
         Method for adding new book to the table books
         doesn't matter if we know the id or don't know
-        parameter - List of elements class Book
+        parameter - List of Book instances
         """
         for book in books:
             book_info = book.get_db_info()
@@ -72,9 +77,9 @@ CREATE TABLE IF NOT EXISTS books(id INTEGER PRIMARY KEY AUTOINCREMENT, Title TEX
 
     def search(self, title:str=None, author:str=None, qty:int=None, id:int = None) -> List[Book]:
         """
-        Metod for Select rows from table detend on different search terms
+        Metod for Selecting rows from table depending on different search terms
         parameters - title, author, qty, id
-        Returns: List of elements class Book
+        Returns: List of Book instances
         """
         list_book = []
         if id is not None:
@@ -97,8 +102,8 @@ CREATE TABLE IF NOT EXISTS books(id INTEGER PRIMARY KEY AUTOINCREMENT, Title TEX
     
     def search_qty(self, num1, num2) -> List[Book]:
         """
-        Method for Select rows from table books selected by qty parameter
-        Returns: List of elements class Book
+        Method for Selecting rows from books table selected by qty parameter
+        Returns: List of Book instances
         """
         list_book = []
         if num2 == 0 and num1 !=0 :
@@ -113,7 +118,7 @@ CREATE TABLE IF NOT EXISTS books(id INTEGER PRIMARY KEY AUTOINCREMENT, Title TEX
     def delete(self, books:List[Book]) -> None:
         """
         Method to Delete rows from the table books
-        Nothing to retern
+        Nothing to return
         """
         for book in books:
             book_info = book.get_db_info()
@@ -122,8 +127,8 @@ CREATE TABLE IF NOT EXISTS books(id INTEGER PRIMARY KEY AUTOINCREMENT, Title TEX
 
     def update(self, books:List[Book]) -> None:
         """
-        Method to Update row in the table books
-        Nothing to retern
+        Method to Update row in the table
+        Nothing to return
         """
         for book in books:
             book_info = book.get_db_info()
@@ -145,6 +150,7 @@ def new_book():
     Request data about new book
     Returns: new object class Book
     """
+    # TODO: function can return a dictionary like {"id": <id from input>, "title": <title from input>, ...} 
     new_title = input("Title:  ")
     new_author = input("Author:  ")
     try:
@@ -157,7 +163,7 @@ def new_book():
 
 def search_by():
     """
-    This Function use to Select rows from database by using id or title/author or qty as a parameter to search
+    This Function is used to Select rows from database by using id or title/author or qty as a parameter to search
     """
     # TODO: function can return a dictionary like {"id": <id from input>, "title": <title from input>, ...} 
     # and book.db.search() would be called outside search_by()
@@ -187,13 +193,13 @@ def search_by():
             num2 = int(input("Second number: "))
             return book_db.search_qty(num1, num2)
         except ValueError:
-            print("Wrong enter")
+            print("Wrong entry")
     else:
         return None
 
 def change_parameters(book_info):
     """
-    Change parameter of elemets class Book
+    Change parameters of Book instance
     Args:
         book_info (List): List of book parameners[id, title, author, qty]
 
@@ -293,7 +299,7 @@ while True:
         break
 
     else:
-        print("Wrong enter. Try again please.")
+        print("Wrong entry. Try again please.")
 
 print("Thank you for using BOOK Database")
 
